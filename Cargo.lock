@@ -10,7 +10,7 @@ checksum = "a3c04de695e63c2a786b2a6c8e861a1cf2f5f1804c603910d385f68cce9e0cd4"
 
 [[package]]
 name = "named-generics-bundle"
-version = "0.1.0-rc2"
+version = "0.1.0-rc3"
 dependencies = [
  "implied-bounds",
  "named-generics-bundle",
@@ -19,7 +19,7 @@ dependencies = [
 
 [[package]]
 name = "named-generics-bundle-proc_macros"
-version = "0.1.0-rc2"
+version = "0.1.0-rc3"
 dependencies = [
  "proc-macro2",
  "quote",
