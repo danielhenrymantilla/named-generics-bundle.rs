@@ -169,7 +169,7 @@ This is already quite a useful trick, but it comes with certain caveats:
 
   - There are also some secondary issues, such as slapping `#[derive(Clone)]` on the `struct Engine`
     and this resulting in `Output` having to be clone, even though it is not part of the actual
-    fields of `Engine`, and it is a mere dummy `PhantomData` instead.
+    fields of `Engine` (it is a mere dummy `PhantomData` instead).
 
       - To be fair, this is a limitation/bug stemming from `#[derive(Clone)]` itself, and other
         similar stdlib `#[derive()]`s, being rather dumb w.r.t. the `impl`s they generate, w.r.t.

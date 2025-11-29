@@ -91,7 +91,7 @@
 ///         // …
 ///     }
 ///
-///     // defines an eponymous "type-level/reälm-instantiation" macro.
+///     // defines an eponymous "type-level-instantiation" macro.
 ///     # type Example =
 ///     MyBundle![
 ///         Foo = i32,
@@ -224,9 +224,7 @@
 ///         part of this specifier with `$crate::` so as to make the `Example![]` macro it
 ///         generates, resilient to being used across crates / from a downstream dependent crate.
 ///
-///
-///
-///   - ### The `path_to_named_generics_bundle_crate = ` attribute arg
+///   - ## The `path_to_named_generics_bundle_crate = ` attribute arg
 ///
 ///     Since this macro stems from a `proc-macro = true` backend using a frontend/façade package,
 ///     the attribute is unable to have a 100%-resilient way to name, and refer back to, its own
