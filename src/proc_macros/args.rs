@@ -7,7 +7,7 @@ pub(crate) struct Args {
 
 impl Parse for Args {
     fn parse(input: ParseStream<'_>) -> Result<Self> {
-        const USAGE: &str = "help:\n\
+        const USAGE: &str = "help:
 Usage:\
     #[named_generics_bundle(
         // Optional. Must be an absolute path (leading `crate`).

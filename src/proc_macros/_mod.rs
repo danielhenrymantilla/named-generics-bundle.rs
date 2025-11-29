@@ -31,6 +31,8 @@ use ::syn::{*,
 
 mod args;
 
+mod validate_module_path;
+
 ///
 #[proc_macro_attribute] pub
 fn named_generics_bundle(
@@ -106,78 +108,6 @@ impl Parse for RestrictedItemTrait {
         })
     }
 }
-
-
-// /// Poorman's version thereof.
-// struct ItemTrait {
-//     attrs: Vec<Attribute>,
-//     pub_: Visibility,
-//     unsafe_: Option<Token![unsafe]>,
-//     trait_: Option<Token![trait]>,
-//     TraitName: Ident,
-//     generics: Option<(Token![<], Vec<TT>, Token![>])>,
-//     super_traits: Vec<TT>,
-//     where_clauses: Option<(Token![where], Vec<TT>, Option<Token![,]>)>,
-//     braced_body: Group,
-// }
-
-// impl Parse for ItemTrait {
-//     fn parse (input: ParseStream<'_>) -> Result<Self> {
-//         let mut ret = Self {
-//             attrs: Attribute::parse_outer(input)?,
-//             pub_: input.parse()?,
-//             unsafe_: input.parse()?,
-//             trait_: input.parse()?,
-//             TraitName: input.parse()?,
-//             generics: input.peek(Token![<]).then(|| -> Result<_> {
-//                 let open = input.parse()?;
-//                 let mut depth = 1;
-//                 let mut tts = Vec::<TT>::new();
-//                 loop {
-//                     let tt = input.parse()?;
-//                     if let TT::Punct(p) = &tt {
-//                         match p.as_char() {
-//                             '<' => depth += 1,
-//                             '>' => depth -= 1,
-//                             _ => {},
-//                         }
-//                     }
-//                     if depth == 0 {
-//                         return Ok((open, tts, token::Gt {
-//                             spans: [tt.span()],
-//                         }));
-//                     }
-//                     tts.push(tt);
-//                 }
-//             }).transpose()?,
-//             super_traits: vec![],
-//             where_clauses: None,
-//             braced_body: Group::new(Delimiter::Brace, <_>::default()),
-//         };
-//         let mut tts = vec![];
-//         let mut where_ = None;
-//         while input.is_empty().not() {
-//             if input.peek(Token![where]) {
-//                 ret.super_traits = tts;
-//                 where_ = Some(input.parse().unwrap());
-//                 let ts: TokenStream2 = input.parse().unwrap();
-//                 tts = ts.into_iter().collect();
-//             } else {
-//                 tts.push(input.parse().unwrap())
-//             }
-//         }
-//         let Some(TT::Group(g)) = tts.pop() else { unreachable!() };
-//         ret.braced_body = g;
-//         if let Some(where_) = where_ {
-//             let trailing_comma =
-//                 matches!(tts.last(), Some(TT::Punct(p)) if p.as_char() == ',')
-//                     .then(|| token::Comma { spans: [tts.pop().unwrap().span()] })
-//             ;
-//             ret.where_clauses = Some((where_, tts, trailing_comma));
-//         }
-//         Ok(ret)
-//     }
-// }
 
 fn named_generics_bundle_impl(
     args: TokenStream2,
@@ -336,5 +266,3 @@ fn named_generics_bundle_impl(
         #pub_ use #ඞTraitName as #TraitName;
     ))
 }
-
-mod validate_module_path;

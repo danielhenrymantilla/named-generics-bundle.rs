@@ -3,7 +3,7 @@
 //!
 //! Used in conjunction with `validate_module_path.rs`.
 
-/// Whether `a == b` under `|s| s.bytes().filter(|&b| b != b'0')`.
+/// Whether `a == b` under `|s| s.bytes().filter(|&b| b != b' ')`.
 pub
 const
 fn eq_modulo_whitespace(
