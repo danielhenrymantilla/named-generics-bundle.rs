@@ -1,0 +1,27 @@
+# Templated by `cargo-generate` using https://github.com/danielhenrymantilla/proc-macro-template
+[lib]
+proc-macro = true
+path = "_mod.rs"
+
+[package]
+name = "named-generics-bundle-proc_macros"
+authors = [
+    "Daniel Henry-Mantilla <daniel.henry.mantilla@gmail.com>"
+]
+version = "0.1.0"  # Keep in sync
+edition = "2024"
+rust-version = "1.87.0"
+
+license = "Zlib OR MIT OR Apache-2.0"
+repository = "https://github.com/danielhenrymantilla/named-generics-bundle.rs"
+documentation = "https://docs.rs/named-generics-bundle"
+
+description = "Internal: proc-macro backend of ::named_generics_bundle."
+
+[dependencies]
+proc-macro2.version = "1.0.0"
+quote.version = "1.0.0"
+syn.version = "2.0.0"
+syn.features = [
+    "full",
+]
