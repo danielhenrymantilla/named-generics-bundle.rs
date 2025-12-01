@@ -5,7 +5,11 @@ extern crate core as named_generics_bundle;
 /// Outer.
 trait _MyBundle : 'static {
     //! Inner.
-    type A: Iterator;
+    type A : Iterator;
 }
 
-type _B = _MyBundle![A = ::core::iter::Empty<()>];
+fn _demo<B : _MyBundle>() {
+    _ = _demo::<
+        _MyBundle![A = ::core::iter::Empty<()>]
+    >;
+}

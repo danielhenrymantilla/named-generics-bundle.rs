@@ -12,10 +12,6 @@ pub mod doctest_module_path {
     #[crate::named_generics_bundle(
         // what we are testing.
         path_to_this_very_module = crate::tests::doctest_module_path,
-        // We *also* happen to need to use (and thus, test-exercise) a `crate`
-        // override since we haven't done the necessary
-        // `extern crate self as named_generics_bundle;` for bootstrapped usage.
-        path_to_named_generics_bundle_crate = crate,
     )]
     pub trait Demo {
         type X: Copy;
