@@ -128,17 +128,6 @@ fn named_generics_bundle_impl(
     let krate = &args.krate.as_ref().map_or_else(|| quote_spanned!(Span::mixed_site()=>
         ::named_generics_bundle
     ), ToTokens::to_token_stream);
-    let dol_krate = if let Some((krate, span)) = args.krate.as_ref().and_then(|p| {
-        let s = p.segments.first().unwrap();
-        (s.ident == "crate").then(|| (p, s.ident.span()))
-    })
-    {
-        &quote_spanned!(span=>
-            $ #krate
-        )
-    } else {
-        krate
-    };
 
     if supertraits.empty_or_trailing().not() {
         supertraits.push_punct(<_>::default());
@@ -234,7 +223,7 @@ fn named_generics_bundle_impl(
         impl<ඞDyn : ?#krate::ඞ::core::marker::Sized + #QualifiedTraitName<()>>
             #TraitName
         for
-            #krate::ඞ::core::marker::PhantomData<fn() -> #krate::ඞ::ඞ<ඞDyn>>
+            #krate::ඞ::core::marker::PhantomData<fn(#krate::ඞ::ඞ<()>) -> ඞDyn>
         {
             #(
                 type #EachTypeName = ඞDyn::#EachTypeName;
@@ -257,10 +246,10 @@ fn named_generics_bundle_impl(
         macro_rules! #ඞTraitName {(
             $($named_generics:tt)*
         ) => (
-            ::core::marker::PhantomData::<fn() -> #dol_krate::ඞ::ඞ<dyn #(#mb_module_path)* #TraitName<
+            ::core::marker::PhantomData::<fn(()) -> dyn #(#mb_module_path)* #TraitName<
                 (),
                 $($named_generics)*
-            >>>
+            >>
         )}
         #[doc(inline)]
         #pub_ use #ඞTraitName as #TraitName;

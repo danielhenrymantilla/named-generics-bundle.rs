@@ -108,17 +108,17 @@
 ///     # () /*
 ///     AnnotatedTrait![ A = B, C = D, … ]
 ///     // expands to:
-///     PhantomData::<fn() -> ඞ<dyn AnnotatedTrait<(), A = B, C = D, …>>>
+///     PhantomData::<fn(ඞ<()>) -> dyn AnnotatedTrait<ඞ<()>, A = B, C = D, …>>
 ///     # */
 ///     ```
 ///
 ///       - Add to this a trivial blanket impl of `AnnotatedTrait` for
-///         `PhantomData<fn() -> ඞ<impl ?Sized + AnnotatedTrait<()>>>`, and _voilà_!
+///         `PhantomData<fn(ඞ<()>) -> impl ?Sized + AnnotatedTrait<ඞ<()>>>`, and _voilà_!
 ///
 ///     In case the `ඞ<…>` wrapper did not give this away, do note that the precise form of this
 ///     expansion is **not** guaranteed, and therefore susceptible to change within non-major Semver
-///     bumps, as it will not be considered a breaking change. The disclosure of this expansion is
-///     done merely for educational/informative reasons.
+///     bumps, as **it will not be considered a breaking change**: the disclosure of this expansion
+///     is done merely for educational/informative reasons.
 ///
 ///   - ### Implied Bounds (`Sized + Copy + Clone + Send/Sync + …`)
 ///
@@ -286,13 +286,23 @@ mod ඞ {
     /// This type is used to convey the notion that users of this attribute are
     /// not to rely on the blanket impl of:
     /// `impl Trait for PhantomData<fn() -> ඞ<impl ?Sized + Trait<()>>>`
-    pub struct ඞ<T : ?Sized>(T);
+    ///
+    /// It effectively is, currently, just an identity type wrapper, but it shall make coherence
+    /// treat the resulting type as being literally any possible type, thereby reducing the risk
+    /// of "breaking changes" should I decide to change what the `Eponymous![]` macro unsugars to.
+    pub type ඞ<T> = <T as Identity>::ItSelf;
+
+    pub trait Identity { type ItSelf : ?Sized; }
+    impl<T : ?Sized> Identity for T { type ItSelf = Self; }
 }
 
 mod const_helpers;
 
 #[doc = include_str!("compile_fail_tests.md")]
 mod _compile_fail_tests {}
+
+#[cfg(any(test, feature = "__internal_testing"))]
+extern crate self as named_generics_bundle;
 
 #[cfg(any(test, feature = "__internal_testing"))]
 pub mod tests;
